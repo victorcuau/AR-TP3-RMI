@@ -16,7 +16,7 @@ public class Client {
 
     try {
         Registry registry = LocateRegistry.getRegistry(host, port);
-        Printer stub = (Printer) registry.lookup("Printer");
+        IPrinter stub = (IPrinter) registry.lookup("Printer");
         stub.printLine("Coucou toi");
         
     } catch (Exception e) {

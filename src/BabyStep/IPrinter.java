@@ -1,6 +1,7 @@
 package BabyStep;
 
 import java.rmi.Remote;
+import java.rmi.RemoteException;
 
 /**
  * @author BADAT Leya & CUAU Victor
@@ -13,6 +14,6 @@ public interface IPrinter extends Remote {
 	 * @param s
 	 * @return nothing
 	 */
-	public void printLine(String s);
+	public void printLine(String s) throws RemoteException;
 	
 }

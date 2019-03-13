@@ -9,20 +9,20 @@ public class Server {
 	
 	static String host = "localhost";
 	static int port = 1234;
+	IPrinter printer;
 	
 	Server() {
-
+		printer = new Printer();
 	}
 	
-	public static void main(String args[]) throws RemoteException {
+	public void run() {
     
     try {
-        Printer printer = new Printer();
-        Printer stub = (Printer) UnicastRemoteObject.exportObject(printer, port);
+        IPrinter stub = (IPrinter) UnicastRemoteObject.exportObject(printer, 0);
 
         // Bind the remote object's stub in the registry
         Registry registry = LocateRegistry.createRegistry(port);
-        registry.rebind("Printer", stub);
+        registry.bind("Printer", stub);
         //Naming.rebind("//" + host + ":" + port + "/" + "LinePrinter", printer);
 
         System.err.println("Server ready");
@@ -31,6 +31,11 @@ public class Server {
         System.err.println("Server exception: " + e.toString());
         e.printStackTrace();
     }
+	}
+	
+	public static void main(String args[]) {
+		Server server = new Server();
+		server.run();
 	}
 
 }
