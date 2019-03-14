@@ -4,16 +4,19 @@ import java.rmi.RemoteException;
 
 public class Participant implements IParticipant {
 
-	@Override
+	String name;
+	
+	Participant(String name) {
+		this.name = name;
+	}
+
 	public String name() {
-		// TODO Auto-generated method stub
-		return null;
+		return name;
 	}
 
 	@Override
 	public void receive(String name, String msg) throws RemoteException {
-		// TODO Auto-generated method stub
-		
+		System.out.println(name + " : " + msg);
 	}
 
 }
