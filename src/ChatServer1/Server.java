@@ -21,7 +21,7 @@ public class Server {
 	
 	public void run() throws IOException, AlreadyBoundException {
 		buffRead = new BufferedReader(new InputStreamReader(System.in));
-		System.out.print("Please choose a name for this new ChatRoom : ");
+		System.out.print("Please choose a name for this new chat room : ");
 		chatRoom = new ChatRoom(buffRead.readLine());
 		
 		register = LocateRegistry.createRegistry(port);

@@ -1,22 +1,25 @@
 package ChatServer1;
 
 import java.rmi.RemoteException;
+import java.rmi.server.UnicastRemoteObject;
 
-public class Participant implements IParticipant {
+public class Participant extends UnicastRemoteObject implements IParticipant {
 
 	String name;
 	
-	Participant(String name) {
+	Participant(String name) throws RemoteException {
 		this.name = name;
 	}
 
-	public String name() {
+	public String name() throws RemoteException {
 		return name;
 	}
 
 	@Override
 	public void receive(String name, String msg) throws RemoteException {
-		System.out.println(name + " : " + msg);
+		if (name.compareTo(this.name) != 0) {
+			System.out.println(name + " : " + msg);
+		}
 	}
 
 }
