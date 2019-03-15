@@ -68,6 +68,7 @@ public class Server {
 		// Creation of the registry
 		register = LocateRegistry.createRegistry(port);
 		
+		System.out.println("SERVER READY");
 		displayHelp();
 		
 		while (cmd.compareTo("/shutdown") != 0) {
@@ -84,6 +85,10 @@ public class Server {
 			else if (cmd.compareTo("/help") == 0  || cmd.compareTo("/h") == 0) {
 				displayHelp();
 			}
+			
+			else {
+				System.out.println("This is not a valid command.");
+			}
 		} 
 		System.out.println("SERVER STOPPED");
 		System.exit(0);
@@ -91,6 +96,7 @@ public class Server {
 	}
 	
 	public static void main(String args[]) throws IOException, AlreadyBoundException {
+		System.out.println("CHAT SERVER");
 		Server server = new Server();
 		server.run();
 	}

@@ -35,7 +35,7 @@ public class ChatRoom extends UnicastRemoteObject implements IChatRoom {
 	/* Allows a participant to leave a chat room */
 	public void leave(IParticipant p) throws RemoteException {
 		ClientList.remove(p);
-		String msg = "Participant " + p.name() + " has been petrified and is now dead.";
+		String msg = "Participant " + p.name() + " has been petrified in " + this.name + " and is now dead.";
 		System.out.println(msg);
 		this.send(p, msg);
 	}

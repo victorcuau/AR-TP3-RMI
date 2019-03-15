@@ -28,7 +28,7 @@ public class Client {
 		System.out.println();
 		System.out.print("At the moment, you are chatting with ");
 		if (list.length < 2) {
-			System.out.println("nobody... I'm sorry, you're all alone there.");
+			System.out.println("nobody... \n I'm sorry, you're all alone there.");
 		} else {
 			System.out.println(" :");
 			for (int i = 0 ; i < list.length ; i++) {
@@ -64,7 +64,29 @@ public class Client {
 		System.out.println();
 	}
 	
+	public static void chooseRoom() throws IOException, NotBoundException {
+		boolean isRoom = false;
+		String nameRoom;
+		do {
+			displayRoom();
+			System.out.print("On which chatroom do you want to connect to? ");
+			nameRoom = buffRead.readLine();
+			System.out.println();
+			for (int i = 0 ; i < registry.list().length ; i++) {
+				if (registry.list()[i].compareTo(nameRoom) == 0) {
+					chatRoom = (IChatRoom) registry.lookup(nameRoom);
+					isRoom = true;
+					break;
+				}
+			}
+			if (!isRoom) {
+				System.out.println(nameRoom + " does not exist.");
+			}
+		} while(!isRoom);
+	}
+	
 	public static void main(String args[]) throws IOException, NotBoundException {
+		System.out.println("CHAT CLIENT");
 		buffRead = new BufferedReader(new InputStreamReader(System.in));
 		
 		// Choose the server
@@ -79,28 +101,7 @@ public class Client {
 		registry = LocateRegistry.getRegistry(host, port);
 		
 		// Connection to a chat room
-		boolean isRoom = false;
-		String nameRoom;
-		
-		do {
-			displayRoom();
-			System.out.print("On which chatroom do you want to connect to? ");
-			nameRoom = buffRead.readLine();
-			System.out.println();
-			
-			for (int i = 0 ; i < registry.list().length ; i++) {
-				if (registry.list()[i].compareTo(nameRoom) == 0) {
-					chatRoom = (IChatRoom) registry.lookup(nameRoom);
-					isRoom = true;
-					break;
-				}
-			}
-			
-			if (!isRoom) {
-				System.out.print(nameRoom + " does not exist.");
-			}
-			
-		} while(!isRoom);
+		chooseRoom();
 		
 		// Creation of a new participant
 		System.out.print("What is your name? ");
@@ -118,21 +119,19 @@ public class Client {
 		while (msg.compareTo("/quit") != 0 && msg.compareTo("/q") != 0) {
 			msg = buffRead.readLine();
 			
-			if (msg.compareTo("/who") == 0  || msg.compareTo("/w") == 0) {
+			if (msg.compareTo("/who") == 0 || msg.compareTo("/w") == 0) {
 				displayWho();
 			}
 			
-			else if (msg.compareTo("/help") == 0  || msg.compareTo("/h") == 0) {
+			else if (msg.compareTo("/help") == 0 || msg.compareTo("/h") == 0) {
 				displayHelp();
 			}
 			
-			else if (msg.compareTo("/leave") == 0  || msg.compareTo("/l") == 0) {
+			else if (msg.compareTo("/leave") == 0 || msg.compareTo("/l") == 0) {
 				chatRoom.leave(participant);
 				System.out.println(participant.name() + ", you've exited the chat room " + chatRoom.name() + ".");
 				
-				displayRoom();
-				System.out.print("On which chat room do you want to connect to? ");
-				chatRoom = (IChatRoom) registry.lookup(buffRead.readLine());
+				chooseRoom();
 			}
 			
 			else {
@@ -143,7 +142,5 @@ public class Client {
 		System.out.println(participant.name() + ", you've exited the chat room " + chatRoom.name() + ".");
 		System.out.println("Exiting application. See you later.");
 		System.exit(0);
-		
 	}
-	
 }
