@@ -9,7 +9,7 @@ import java.rmi.registry.Registry;
 
 public class Server {
 	
-	int port = 1234 ;
+	int port ;
 	
 	ChatRoom chatRoom ;
 	Registry register ;
@@ -21,6 +21,12 @@ public class Server {
 	
 	public void run() throws IOException, AlreadyBoundException {
 		buffRead = new BufferedReader(new InputStreamReader(System.in));
+		
+		// Choose the port
+		System.out.print("On which port do you want to connect? ");
+		port = Integer.parseInt(buffRead.readLine());
+		
+		// Choose the chat room name
 		System.out.print("Please choose a name for this new chat room : ");
 		chatRoom = new ChatRoom(buffRead.readLine());
 		
