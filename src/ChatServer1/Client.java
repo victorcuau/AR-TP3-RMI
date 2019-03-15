@@ -82,7 +82,8 @@ public class Client {
 				chatRoom.send(participant, msg);
 			}
 		} 
-		
+		System.out.println(participant.name() + ", you've exited the chat room " + chatRoom.name() + ".");
+		System.out.println("See you later.");
 		chatRoom.leave(participant);
 		System.exit(0);
 		
