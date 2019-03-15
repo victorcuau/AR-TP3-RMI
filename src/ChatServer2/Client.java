@@ -26,18 +26,31 @@ public class Client {
 	public static void displayWho() throws RemoteException {
 		String[] list = chatRoom.who();
 		System.out.println();
-		System.out.println("At the moment, you are chatting with :");
-		for (int i = 0 ; i < list.length ; i++) {
-			System.out.println("\t" + list[i]);
+		System.out.print("At the moment, you are chatting with ");
+		if (list.length < 2) {
+			System.out.println("nobody... I'm sorry, you're all alone there.");
+		} else {
+			System.out.println(" :");
+			for (int i = 0 ; i < list.length ; i++) {
+				if (!list[i].equals(participant.name()))
+				System.out.println("\t" + list[i]);
+			}
 		}
 		System.out.println();
 	}
 	
 	public static void displayRoom() throws RemoteException {
 		System.out.println();
-		System.out.println("At the moment, the chat rooms available are :");
-		for (int i = 0 ; i < registry.list().length ; i++) {
-			System.out.println("\t" + registry.list()[i]);
+		int numChatRoom = registry.list().length;
+		if(numChatRoom < 1) {
+			System.out.println("There is no chatroom available. Please, come back again.");
+		} else if (numChatRoom == 1) {
+			System.out.println("At the moment, the only chatroom available is " + registry.list()[0]);
+		} else {
+			System.out.println("At the moment, the chatrooms available are :");
+			for (int i = 0 ; i < registry.list().length ; i++) {
+				System.out.println("\t" + registry.list()[i]);
+			}
 		}
 		System.out.println();
 	}
@@ -66,20 +79,18 @@ public class Client {
 		registry = LocateRegistry.getRegistry(host, port);
 		
 		// Connection to a chat room
-		displayRoom();
-		System.out.print("On which chat room do you want to connect to? ");
-		String nameRoom = buffRead.readLine();
 		boolean isRoom = false;
+		String nameRoom;
 		
 		do {
 			displayRoom();
-			System.out.print("On which CHAT room do you want to connect to? ");
+			System.out.print("On which chatroom do you want to connect to? ");
 			nameRoom = buffRead.readLine();
 			System.out.println();
 			
 			for (int i = 0 ; i < registry.list().length ; i++) {
 				if (registry.list()[i].compareTo(nameRoom) == 0) {
-					chatRoom = (IChatRoom) registry.lookup(buffRead.readLine());
+					chatRoom = (IChatRoom) registry.lookup(nameRoom);
 					isRoom = true;
 					break;
 				}
