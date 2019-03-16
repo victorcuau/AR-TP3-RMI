@@ -43,7 +43,10 @@ public class Client {
 		System.out.println();
 		int numChatRoom = registry.list().length;
 		if(numChatRoom < 1) {
-			System.out.println("There is no chatroom available. Please, come back again.");
+			System.out.println("There is currently no chatroom available on " + host);
+			System.out.println("Please, come back again.");
+			System.out.println("Exiting application. See you later.");
+			System.exit(-1);
 		} else if (numChatRoom == 1) {
 			System.out.println("At the moment, the only chatroom available is " + registry.list()[0]);
 		} else {
@@ -83,6 +86,19 @@ public class Client {
 				System.out.println(nameRoom + " does not exist.");
 			}
 		} while(!isRoom);
+		
+		// Creation of a new participant
+				System.out.print("What is your name? ");
+				participant = new Participant(buffRead.readLine());
+		
+		// Welcome message
+				System.out.println();
+				System.out.println(participant.name() + ", you've entered the chat room " + chatRoom.name() + ".");
+				displayHelp();
+				
+				chatRoom.connect(participant);
+				
+		displayWho();
 	}
 	
 	public static void main(String args[]) throws IOException, NotBoundException {
@@ -102,19 +118,6 @@ public class Client {
 		
 		// Connection to a chat room
 		chooseRoom();
-		
-		// Creation of a new participant
-		System.out.print("What is your name? ");
-		participant = new Participant(buffRead.readLine());
-		
-		// Welcome message
-		System.out.println();
-		System.out.println(participant.name() + ", you've entered the chat room " + chatRoom.name() + ".");
-		displayHelp();
-		
-		chatRoom.connect(participant);
-		
-		displayWho();
 		
 		while (msg.compareTo("/quit") != 0 && msg.compareTo("/q") != 0) {
 			msg = buffRead.readLine();
