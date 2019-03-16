@@ -138,7 +138,14 @@ public class Client {
 			}
 			
 			else {
-				chatRoom.send(participant, msg);
+				try {
+					chatRoom.send(participant, msg);
+				} catch (RemoteException e) {
+					// Pb ici, si qqn se déco avec CTRL+C, et que qqn d'autre envoi un msg, plus personne ne reçoit...
+					System.out.println("Oops, it seems that some participant(s) in this chat room are disconnected.");
+					System.out.println("Some of them may not received your last message.");
+				}
+				
 			}
 		}
 		chatRoom.leave(participant);
